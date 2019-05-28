@@ -2,8 +2,10 @@ import sys
 import os
 import cv2
 import numpy as np
-import Image, colorsys
 from PIL import Image
+import colorsys
+import logging
+import norm_composite
 
 #helper function which rotates an image
 '''
@@ -44,24 +46,106 @@ def hue_change(img, intensity, value):
     return img
 '''
 
-def normImage(img):
+def getImg(directory,dirout=''):
+    #list of images in directory
+    cat1_list = os.listdir(directory)
+    for f1 in cat1_list:
+        full_dir1 = directory + f1
+        fileout = os.path.splitext(f1)[0] + '.png'
+        print ('get img file out:' + fileout)
+
+        tmp = cv2.imread(full_dir1,cv2.IMREAD_COLOR)
+        #tmp = cv2.imread("C:/Users/ashikamulagada/Documents/GitHub/SolidWasteClassification/source/trash_images/mixed/all/mixed2.JPG",cv2.IMREAD_COLOR)
+        # size = tmp.size
+        # print ('size: ' + size)
+        try:
+            size = tmp.size
+            print (size)
+            original = cv2.resize(tmp,(1000,1000),interpolation=cv2.INTER_CUBIC)
+            normImage(original, fileout)
+        except Exception as e:
+            print(str(e))
+            #normImage(tmp, fileout)
+        #normImage(original, dirout)
+
+
+def normImage(img, outdir):
+#def normImage(directory,dirout=''):
+    print ('Hello, world!')
+    print (outdir)
+    '''
     #convert to hsv
     #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #https://stackoverflow.com/questions/22236956/rgb-to-hsv-via-pil-and-colorsys/30346072
     #hsv = image.convert('HSV')
     #hsv = HSVColor(img)
-    hsv = img.convert('HSV')
-
+    img2 = Image.fromarray(img.astype('uint8'), 'RGB')
+    hsv = img2.convert('HSV')
+    print ('Done with hsv')
     #apply clahe on V
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-    cl1 = clahe.apply(hsv)
+    cl1 = clahe.apply(cv2.UMat(hsv))
     #cv2.imwrite('clahe_2.jpg',cl1)
+
+    print ('Done with clahe')
 
     #convert back to rgb space and return
     rgb = cl1.convert('RGB')
 
+    f_out =  "1" + "_" + "normalized_bgrsegment_nobg"
+    fout = os.path.join(outdir,f_out)
+    cv2.imwrite(fout,rgb)
+
+    rgb.save("normalized_img.jpg")
+
     return rgb
+    '''
+    image = np.copy(img)
+    #https://stackoverflow.com/questions/25008458/how-to-apply-clahe-on-rgb-color-images
+    try:
+        img1 = Image.fromarray(img.astype('uint8'), 'RGB')
+        image = np.copy(img1)
+    except Exception as e:
+        print(str(e))
+    #bgr = cv2.imread(img)
+
+    lab = cv2.cvtColor(cv2.UMat(image), cv2.COLOR_RGB2LAB)
+    print ('lab')
+
+    lab_planes = cv2.split(lab)
+
+    clahe = cv2.createCLAHE(clipLimit=2.0,tileGridSize=(8,8))
+
+    lab_planes[0] = clahe.apply(lab_planes[0])
+
+    lab = cv2.merge(lab_planes)
+
+    image = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+
+    bgr = Image.fromarray(image.astype('uint8'), 'RGB')
+
+    print ('normalized!')
+
+    # f_out =  "1" + "_" + "normalized_bgrsegment_nobg"
+    # #f_out = outdir
+    # fout = os.path.join(outdir,f_out)
+    # cv2.imwrite(fout,image)
+
+    # bgr.save("normalized_img.jpg")
+
+    # if imsize>1200
+    #     call crop
+
+    if bgr.size>1000000:
+        print ('calling cut')
+        norm_composite.cut(outdir, bgr, 1000, 1000, 1, 1000000)
+    else:
+        print ('not calling cut')
+        bgr.save(outdir)
+
+    return bgr
+
 
 
 
@@ -83,6 +167,10 @@ def HSVColor(img):
         return Image.merge('RGB',(r,g,b))
     else:
         return None
+
+
+if __name__ == '__main__':
+    getImg(sys.argv[2],dirout=sys.argv[3])
 
 
 '''
