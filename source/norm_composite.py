@@ -9,21 +9,21 @@ import normalize
 
 def getImages(directory1,directory2,directory3,dirout=''):
     #list of images in directory
-    cat2_list = os.listdir(directory2)
-    for f2 in cat2_list:
-        full_dir2 = directory2 + f2
-        fileout = os.path.splitext(f2)[0] + '.png'
-        print ('get img file out:' + fileout)
-
-        tmp2 = cv2.imread(full_dir2,cv2.IMREAD_COLOR)
-
-    cat3_list = os.listdir(directory3)
-    for f3 in cat3_list:
-        full_dir3 = directory3 + f3
-        fileout = os.path.splitext(f3)[0] + '.png'
-        print ('get img file out:' + fileout)
-
-        tmp3 = cv2.imread(full_dir3,cv2.IMREAD_COLOR)
+    # cat2_list = os.listdir(directory2)
+    # for f2 in cat2_list:
+    #     full_dir2 = directory2 + f2
+    #     fileout = os.path.splitext(f2)[0] + '.png'
+    #     print ('get img file out:' + fileout)
+    #
+    #     tmp2 = cv2.imread(full_dir2,cv2.IMREAD_COLOR)
+    #
+    # cat3_list = os.listdir(directory3)
+    # for f3 in cat3_list:
+    #     full_dir3 = directory3 + f3
+    #     fileout = os.path.splitext(f3)[0] + '.png'
+    #     print ('get img file out:' + fileout)
+    #
+    #     tmp3 = cv2.imread(full_dir3,cv2.IMREAD_COLOR)
 
     # cat2_list = os.listdir(directory2)[0]
     # print ('cat2_list')
@@ -42,12 +42,40 @@ def getImages(directory1,directory2,directory3,dirout=''):
     # tmp3 = cv2.imread(full_dir3,cv2.IMREAD_COLOR)
 
 
-    cat1_list = os.listdir(directory1)
-    for f1 in cat1_list:
-        full_dir1 = directory1 + f1
-        fileout = os.path.splitext(f1)[0] + '.png'
-        print ('get img file out:' + fileout)
+    # cat1_list = os.listdir(directory1)
+    # for f1 in cat1_list:
+    #     full_dir1 = directory1 + f1
+    #     fileout = os.path.splitext(f1)[0] + '.png'
+    #     print ('get img file out:' + fileout)
+    #     tmp1 = cv2.imread(full_dir1,cv2.IMREAD_COLOR)
+    #     try:
+    #         print ('resizing cardboard')
+    #         original1 = cv2.resize(tmp1,(1000,1000),interpolation=cv2.INTER_CUBIC)
+    #         print ('resizing treematter')
+    #         original2 = cv2.resize(tmp2,(1000,1000),interpolation=cv2.INTER_CUBIC)
+    #         print ('resizing plywood')
+    #         original3 = cv2.resize(tmp3,(1000,1000),interpolation=cv2.INTER_CUBIC)
+    #         stitch(original1, original2, original3, fileout)
+    #     except Exception as e:
+    #         print(str(e))
+
+    #cat1_list = os.listdir(directory1)
+    for x in range(6):
+        cat1_list = os.listdir(directory1)[x]
+        full_dir1 = directory1 + cat1_list
+        fileout = os.path.splitext(cat1_list)[0] + '.png'
         tmp1 = cv2.imread(full_dir1,cv2.IMREAD_COLOR)
+
+        cat2_list = os.listdir(directory2)[x]
+        full_dir2 = directory2 + cat2_list
+        fileout = os.path.splitext(cat2_list)[0] + '.png'
+        tmp2 = cv2.imread(full_dir2,cv2.IMREAD_COLOR)
+
+        cat3_list = os.listdir(directory3)[x]
+        full_dir3 = directory3 + cat3_list
+        fileout = os.path.splitext(cat3_list)[0] + '.png'
+        tmp3 = cv2.imread(full_dir3,cv2.IMREAD_COLOR)
+
         try:
             print ('resizing cardboard')
             original1 = cv2.resize(tmp1,(1000,1000),interpolation=cv2.INTER_CUBIC)
@@ -58,6 +86,7 @@ def getImages(directory1,directory2,directory3,dirout=''):
             stitch(original1, original2, original3, fileout)
         except Exception as e:
             print(str(e))
+
         #normImage(original, dirout)
 
 
@@ -125,7 +154,7 @@ def cut(path, image, height, width, k, area):
         #     pass
         except Exception as e:
             print('e: ' + str(e))
-            #a.save(str(k) + path)
+            a.save('composite_' + path)
             print('saved')
         k +=1
 

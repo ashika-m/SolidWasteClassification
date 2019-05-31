@@ -7,19 +7,19 @@ TRASHBAG_DIR="trash_images/trashbag/ingroup/"
 BOTTLES_DIR="trash_images/bottles/ingroup/"
 BLACKBAG_DIR="trash_images/blackbag/ingroup/"
 GROUND_DIR="categories/ground/ingroup/"
-MIXED_DIR="categories/mixed/all"
+MIXED_DIR="trash_images/mixed/ingroup/"
 OUT_DIR1="normalized_bgrsegment_nobg"
 
 mkdir $OUT_DIR1
 echo "Start normalizing"
 echo "Normalizing composite"
-python norm_composite.py normImage $CARDBOARD_DIR $TREEMATTER_DIR $PLYWOOD_DIR $OUT_DIR1 &
+#python norm_composite.py normImage $PLYWOOD_DIR $TREEMATTER_DIR $CARDBOARD_DIR $OUT_DIR1 &
 # echo "Normalizing Treematter"
 # python normalize.py normImage $TREEMATTER_DIR $OUT_DIR1 &
 # echo "Normalizing Plywood"
 # python normalize.py normImage $PLYWOOD_DIR $OUT_DIR1 &
-# echo "Normalizing Bottles"
-# python normalize.py normImage $BOTTLES_DIR $OUT_DIR1 &
+echo "Normalizing Bottles"
+python norm_composite.py normImage $TRASHBAG_DIR $BLACKBAG_DIR $MIXED_DIR $OUT_DIR1 &
 # echo "Normalizing Black Bag"
 # python normalize.py normImage $BLACKBAG_DIR $OUT_DIR1 &
 # echo "Normalizing Trash Bag"

@@ -127,22 +127,27 @@ def normImage(img, outdir):
 
     print ('normalized!')
 
-    # f_out =  "1" + "_" + "normalized_bgrsegment_nobg"
-    # #f_out = outdir
-    # fout = os.path.join(outdir,f_out)
-    # cv2.imwrite(fout,image)
 
     # bgr.save("normalized_img.jpg")
 
     # if imsize>1200
     #     call crop
-
-    if bgr.size>1000000:
+    print('size')
+    print(bgr.size)
+    width, height = bgr.size
+    print(width)
+    if width> 1000:
         print ('calling cut')
         norm_composite.cut(outdir, bgr, 1000, 1000, 1, 1000000)
     else:
         print ('not calling cut')
         bgr.save(outdir)
+
+        # f_out =  "1" + "_" + "normalized_images"
+        # #f_out = outdir
+        # fout = os.path.join(outdir,f_out)
+        # cv2.imwrite(fout,bgr)
+
 
     return bgr
 
