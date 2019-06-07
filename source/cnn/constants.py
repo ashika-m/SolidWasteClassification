@@ -4,14 +4,14 @@ KEEP_RATE = 0.8                     #Rate of dropping out in the dropout layer
 LOG_DIR = "../ops_logs"             #Directory where the logs would be stored for visualization of the training
 
 #Neural network constants
-cat1_dir = "../categories/treematter/ingroup/"
-cat2_dir = "../categories/plywood/ingroup/"
-cat3_dir = "../categories/cardboard/ingroup/"
-cat4_dir = "../categories/bottles/ingroup/"
-cat5_dir = "../categories/trashbag/ingroup/"
-cat6_dir = "../categories/blackbag/ingroup/"
-MIXEDFILE = "../categories/mixed/mixed14.JPG"
-GROUND_TRUTH = "../categories/ground_truth/mixed14_gt.png"
+cat1_dir = "../trash_images/treematter_normalized/"
+cat2_dir = "../trash_images/plywood_normalized/"
+cat3_dir = "../trash_images/cardboard_normalized/"
+cat4_dir = "../trash_images/bottles_normalized/"
+cat5_dir = "../trash_images/trashbag_normalized/"
+cat6_dir = "../trash_images/blackbag_normalized/"
+MIXEDFILE = "../trash_images/mixed_normalized/mixed14.png"
+GROUND_TRUTH = "../trash_images/mixed/gt/mixed14_gt.png"
 CAT1            = "treematter"
 CAT2            = "plywood"
 CAT3            = "cardboard"

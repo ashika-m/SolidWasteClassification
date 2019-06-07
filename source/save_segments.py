@@ -94,6 +94,8 @@ output:
     3. image rotated 270 degrees
 '''
 def rotateImage(img):
+    print ('img')
+    print (img)
     rows,cols,depth = img.shape
     M1 = cv2.getRotationMatrix2D((cols/2,rows/2),90,1)
     M2 = cv2.getRotationMatrix2D((cols/2,rows/2),180,1)
@@ -115,9 +117,12 @@ def multiplyImages(image_dir):
     args = os.listdir(image_dir)
     for f in args:
         full_dir = os.path.join(image_dir, f)
-
+        print ('f')
+        print (f)
         original = cv2.imread(full_dir,cv2.IMREAD_COLOR)
 
+        print ('orig')
+        print(original)
         flipped = flipImage(original)
         r1,r2,r3 = rotateImage(original)
         r4,r5,r6 = rotateImage(flipped)

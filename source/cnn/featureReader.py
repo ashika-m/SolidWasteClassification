@@ -38,6 +38,8 @@ def getTestingBatch(n,catname='mixed'):
 
     #initialize variables
     tmp = cv2.imread(constants.MIXEDFILE,cv2.IMREAD_COLOR)
+    print ("img size")
+    print (tmp.size)
     img = cv2.resize(tmp,(constants.FULL_IMGSIZE,constants.FULL_IMGSIZE),interpolation=cv2.INTER_CUBIC)
     tmp = cv2.imread(constants.GROUND_TRUTH,cv2.IMREAD_COLOR)
     gt = cv2.resize(tmp,(constants.FULL_IMGSIZE,constants.FULL_IMGSIZE),interpolation=cv2.INTER_NEAREST)
@@ -108,84 +110,4 @@ def getBatch(n,catname='mixed'):
     inputs = []
     labels = []
 
-    #initialize variablees
-    cat1_dir = constants.cat1_dir
-    cat2_dir = constants.cat2_dir
-    cat3_dir = constants.cat3_dir
-    cat4_dir = constants.cat4_dir
-    cat5_dir = constants.cat5_dir
-    cat6_dir = constants.cat6_dir
-
-    dirs = [constants.cat1_dir,constants.cat2_dir,constants.cat3_dir,constants.cat4_dir,constants.cat5_dir,constants.cat6_dir]
-    categories = [constants.CAT1_ONEHOT,constants.CAT2_ONEHOT,constants.CAT3_ONEHOT,constants.CAT4_ONEHOT,constants.CAT5_ONEHOT,constants.CAT6_ONEHOT]
-    images = []
-    files = []
-
-    #check if the file directories exist and push all files into their respective categories
-    for d in dirs:
-        if os.path.exists(d):
-            tmp = os.listdir(d)
-            a = random.randint(0,len(tmp) - 1)
-            path = os.path.join(d,tmp[a])
-            files.append(path)
-        else:
-            print("%s directory does not exist" % d)
-
-    #pick a random file from the list of files for each category and read them in
-    #if mixed get even amount of everything and use the label for that category
-    if(catname == 'mixed'):
-        for i,f in enumerate(files):
-            full_img = cv2.imread(f,cv2.IMREAD_COLOR)
-            img = cv2.resize(full_img,(constants.FULL_IMGSIZE,constants.FULL_IMGSIZE),interpolation=cv2.INTER_CUBIC)
-
-            w, h, d = img.shape
-            for j in range(n):
-                low = int(constants.IMG_SIZE / 2)
-                high = int(w - (constants.IMG_SIZE / 2) - 1)
-                a = random.randint(low,high)
-                b = random.randint(low,high)
-                box_low1 = int(a - (constants.IMG_SIZE / 2))
-                box_low2 = int(b - (constants.IMG_SIZE / 2))
-                box_high1 = int(a + (constants.IMG_SIZE / 2))
-                box_high2 = int(b + (constants.IMG_SIZE / 2))
-
-                box = img[box_low1:box_high1,box_low2:box_high2]
-                inputs.append(box)
-                labels.append(categories[i])
-
-    #if a category is chosen label is binary
-    #get half of chosen category, half of others
-    elif(catname == 'treematter' or catname == 'plywood' or catname == 'cardboard' or catname == 'trashbag' or catname == 'blackbag' or catname == 'bottles'):
-        index = cats.index(catname)
-        for i,f in enumerate(files):
-            img = cv2.imread(f,cv2.IMREAD_COLOR)
-            w, h, d = img.shape
-            if i == index:
-                k = 1
-            else:
-                k = constants.CLASSES
-            for j in range(int(n/k)):
-                low = int(constants.IMG_SIZE / 2)
-                high = int(w - (constants.IMG_SIZE / 2) - 1)
-                a = random.randint(low,high)
-                b = random.randint(low,high)
-                box_low1 = int(a - (constants.IMG_SIZE / 2))
-                box_low2 = int(b - (constants.IMG_SIZE / 2))
-                box_high1 = int(a + (constants.IMG_SIZE / 2))
-                box_high2 = int(b + (constants.IMG_SIZE / 2))
-
-                box = img[box_low1:box_high1,box_low2:box_high2]
-                inputs.append(box)
-                if i == index:
-                    labels.append([1])
-                else:
-                    labels.append([0])
-
-    #shuffle the input and labels in parralel
-    c = list(zip(inputs,labels))
-    random.shuffle(c)
-    inputs,labels = zip(*c)
-
-    #return as batch size to get normal distribution
-    return np.array(inputs)[:n],np.array(labels)[:n]
-
+    #initialize var

@@ -34,8 +34,18 @@ def getTrainingBatch(n,catname='mixed'):
 
     #initialize variables
     tmp = cv2.imread(full_dir,cv2.IMREAD_COLOR)
+    print ('tmp')
+    print (tmp)
     img = cv2.resize(tmp,(constants.FULL_IMGSIZE,constants.FULL_IMGSIZE),interpolation=cv2.INTER_CUBIC)
     tmp = cv2.imread(full_gtdir,cv2.IMREAD_COLOR)
+    print ('n')
+    print (n)
+    print ('tmp')
+    print (tmp)
+    print ('full dir')
+    print (full_dir)
+    print ('gt dir')
+    print (full_gtdir)
     gt = cv2.resize(tmp,(constants.FULL_IMGSIZE,constants.FULL_IMGSIZE),interpolation=cv2.INTER_NEAREST)
 
     #preprocess label image to be of 2^3 color scheme
